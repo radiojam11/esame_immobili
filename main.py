@@ -14,12 +14,14 @@ def menu():
   while x !=0 :
     print ("                   Menu'")
     print("            Gestione Immobiliare")
-    print(" INSERIMENTO IMMOBILE  .....digita 1 --> ")
-    print(" MODIFICA IMMOBILE     .....digita 2 --> ")
-    print(" CANCELLA IMMOBILE     .....digita 3 --> ")
-    print(" STAMPA CATALGO IMMOBIBILI..digita 4 --> ")
-    print(" INSERISCI NUOVO CLIENTE....digita 5 --> ")
-    print(" STAMPA ANAGRAFICA CLIENTI..digita 6 --> ")
+    print(" INSERIMENTO IMMOBILE  .........digita 1 --> ")
+    print(" MODIFICA IMMOBILE     .........digita 2 --> ")
+    print(" CANCELLA IMMOBILE     .........digita 3 --> ")
+    print(" STAMPA CATALGO IMMOBIBILI......digita 4 --> ")
+    print(" INSERISCI NUOVO CLIENTE........digita 5 --> ")
+    print(" STAMPA ANAGRAFICA CLIENTI......digita 6 --> ")
+    print(" CERCA IMMOBILE PER INDIRIZZO...digita 7 --> ")
+    print(" STAMPA IMMOBILI PER CATALOGO...digita 8 --> ")
     print("\n")
     print(" PER USCIRE ................digita 0 --> ")
     print("\n\n")
@@ -36,6 +38,10 @@ def menu():
       return 5
     elif x == "6":
       return 6
+    elif x == "7":
+      return 7
+    elif x == "8":
+      return 8
     elif x == "0":
       x = 0
       exit(222)
@@ -52,7 +58,7 @@ class Immobile():
         self. indirizzo=indirizzo
         self.prezzo=prezzo
         self.classe_energ=classe_energ
-        if int(self.prezzo) <=1000000:
+        if int(self.prezzo) <=100000:
             cat = "Popolare"
         elif int(self.prezzo) > 100000 and int(self.prezzo) <= 250000:
             cat = "Vacanze"
@@ -75,6 +81,10 @@ class Immobile():
     def stampa_caratteristiche(self):
         print(f"\nProprietario ID: {self.proprietario} \nsito in : {self.indirizzo} - \nClasse Energetica : {self.classe_energ} - \n Prezzo: {self.prezzo} \n Catalogo : {self.catalogo}")
         return True
+    def stampa_catalogo(self, catalogo):
+            if self.catalogo == catalogo:
+                print(f"\nProprietario ID: {self.proprietario} \nsito in : {self.indirizzo} - \nClasse Energetica : {self.classe_energ} - \n Prezzo: {self.prezzo} \n Catalogo : {self.catalogo}")
+            return  True
 #Immagino di avere come Clienti anche affittuari quindi creo una classe base Cliente e altre classi come Proprietario piu' specifiche
 class Cliente():
     def __init__(self, nome=None, cognome=None, indirizzo=None, telefono=None):
@@ -165,6 +175,21 @@ def main():
             el.stampa_caratteristiche()
             print("----------------------")
         input("digita un tasto per continuare.....")
+    elif  scelta == 7:
+        # CERCA IMMOBILE PER INDIRIZZO
+        pass
+    elif scelta == 8:
+        # STAMPA CATALOGO
+        scel = input("Quale catalogo vuoi stampare? o(Popolare) v(Vacanze, p(Prestigio)  ")
+        for el in immobili:
+            if scel == "o":
+                el.stampa_catalogo("Popolare")
+            elif scel == "v":
+                el.stampa_catalogo("Vacanze")
+            elif scel == "p":
+                el.stampa_catalogo("Prestigio")
+         input("digita un tasto per continuare.....")
+
     else:
         pass
 
