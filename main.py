@@ -264,6 +264,14 @@ def sqlite_start():
             id, proprietario,  indirizzo, prezzo, classe_energ = row
             immobile = Immobile(id=id, proprietario=proprietario, indirizzo= indirizzo, prezzo = prezzo, classe_energ=classe_energ)
             immobili.append(immobile)
+
+
+def sqlite_save():
+    """La funzione consente di salvare i dati dopo l'immissione manuale da menu"""
+    #forse la cosa migliore e' fare questa operazione come modulo della classe - va considerata questa possibilita' -
+    #  e magari ricaricate le liste ogni modifica o aggiunta - da pensarci a mente fresca
+    pass
+
 # MAIN
 if __name__ == '__main__':
     while True:
