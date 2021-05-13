@@ -46,12 +46,20 @@ def menu():
   return 0
 
 class Immobile():
-    catalogo = "X"
+    
     def __init__(self, proprietario=None, indirizzo=None, prezzo=None, classe_energ=None):
         self.proprietario=proprietario
         self. indirizzo=indirizzo
         self.prezzo=prezzo
         self.classe_energ=classe_energ
+        if int(self.prezzo) <=1000000:
+            cat = "Popolare"
+        elif int(self.prezzo) > 100000 and int(self.prezzo) <= 250000:
+            cat = "Vacanze"
+        else:
+            cat = "Prestigio"
+        self.catalogo = cat
+
     def mod_attributo(self, a): # a riceve una tupla(attributo_da_modificare, nuovo_valore_attributo)
         if a[0]=="proprietario":
             self.proprietario = a[1]
@@ -65,7 +73,7 @@ class Immobile():
             return False
         return True
     def stampa_caratteristiche(self):
-        print(f"\nProprietario ID: {self.proprietario} \nsito in : {self.indirizzo} - \nClasse Energetica : {self.classe_energ} - \n Prezzo: {self.prezzo}")
+        print(f"\nProprietario ID: {self.proprietario} \nsito in : {self.indirizzo} - \nClasse Energetica : {self.classe_energ} - \n Prezzo: {self.prezzo} \n Catalogo : {self.catalogo}")
         return True
 #Immagino di avere come Clienti anche affittuari quindi creo una classe base Cliente e altre classi come Proprietario piu' specifiche
 class Cliente():
@@ -117,7 +125,7 @@ def main():
             indirizzo = input("inserisci indirizzo immobile : ")
             immobili[imm].mod_attributo(a=("indirizzo", indirizzo ))
         elif sel == "z":
-            prezzo = input(" inserisci il prezzo dell'immobile : ")
+            prezzo = input("inserisci il prezzo dell'immobile : ")
             immobili[imm].mod_attributo(a=("prezzo", prezzo ))
         elif sel == "c":
             classe_energ = input("inserisci classe energetica dell'immobile (A - B - ..- G) : ")
