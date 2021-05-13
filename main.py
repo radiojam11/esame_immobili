@@ -8,7 +8,7 @@ clienti = []
 immobili = []
 
 
-#SQLite  Creo il file del data vase se ancora non esiste e ci costruisco dentro  1 Cliente esempio ed un immobile esempio (si troveranno all' ID 1)
+#SQLite  Creo il file del data base se ancora non esiste e ci costruisco dentro  1 Cliente esempio ed un Immobile esempio (si troveranno all' ID 1)
 import os
 import sqlite3
 
@@ -40,7 +40,8 @@ with sqlite3.connect(db_filename) as conn:
 # LE CLASSI
 class Immobile():
     """Classe Immobile contiene tutte le informazioni relative all'immobile"""
-    def __init__(self, proprietario=None, indirizzo=None, prezzo=None, classe_energ=None):
+    def __init__(self, id=None, proprietario=None, indirizzo=None, prezzo=None, classe_energ=None):
+        self.id=id
         self.proprietario=proprietario
         self.indirizzo=indirizzo
         self.prezzo=prezzo
@@ -80,7 +81,8 @@ class Immobile():
 #Immagino di avere come Clienti anche affittuari quindi creo una classe base Cliente e altre classi come Proprietario piu' specifiche
 class Cliente():
     """Classe Cliente contiene tutte le informazioni relative alla anagrafica Cliente """
-    def __init__(self, nome=None, cognome=None, indirizzo=None, telefono=None):
+    def __init__(self, id=None, nome=None, cognome=None, indirizzo=None, telefono=None):
+        self.id=id
         self.nome=nome
         self.cognome=cognome
         self.indirizzo=indirizzo
@@ -92,8 +94,8 @@ class Cliente():
         return True
 class Proprietario(Cliente):
     """La Classe Proprietario contiene tutte le info relative al Cliente proprietario di almeno un immobile """
-    def __init__(self, nome=None, cognome=None, indirizzo=None, telefono=None, proprieta=None):
-        super().__init__(nome=nome, cognome=cognome, indirizzo=indirizzo, telefono=None)
+    def __init__(self,id=None, nome=None, cognome=None, indirizzo=None, telefono=None, proprieta=None):
+        super().__init__(id=id, nome=nome, cognome=cognome, indirizzo=indirizzo, telefono=None)
         self.proprieta = proprieta
         
 
@@ -210,7 +212,7 @@ def main():
         input("digita un tasto per continuare.....")
     elif scelta == 6:
         # STAMPA ANAGRAFICA CLIENTE
-        print(clienti)
+        #print(clienti)
         for num, el in enumerate (clienti):
             el.stampa_caratteristiche()
             print("----------------------")
@@ -236,8 +238,34 @@ def main():
     else:
         pass
 
+def sqlite_start():
+    """La funzione carica i dati della nostra immobiliare dal DB registrato su disco e li passa alle liste - clienti e immobili """
+    global db_filename
+    global clienti
+    global immobili
+    with sqlite3.connect(db_filename) as conn:
+        cursor = conn.cursor()
+        # carico tutti i clienti eccetto ID 1 che e' il cliente ESEMPIO
+        cursor.execute("""
+        select id, nome, cognome, indirizzo, telefono, proprieta from clienti where id > 1
+        """)
+        #ciclo ogni riga - creo l'oggetto cliente - lo aggiungo alla lista clienti
+        for row in cursor.fetchall():
+            id, nome, cognome, indirizzo, telefono, proprieta = row
+            cliente = Proprietario(id=id, nome=nome, cognome=cognome, indirizzo= indirizzo, telefono=telefono, proprieta=proprieta)
+            clienti.append(cliente)
 
+        # carico tutti gli immobili eccetto ID 1 che e' l'immobile di ESEMPIO
+        cursor.execute("""
+        select id, proprietario,  indirizzo, prezzo, classe_energ from immobili where id > 1
+        """)
+        #ciclo ogni riga - creo l'oggetto immobile - lo aggiungo alla lista immobili
+        for row in cursor.fetchall():
+            id, proprietario,  indirizzo, prezzo, classe_energ = row
+            immobile = Immobile(id=id, proprietario=proprietario, indirizzo= indirizzo, prezzo = prezzo, classe_energ=classe_energ)
+            immobili.append(immobile)
 # MAIN
 if __name__ == '__main__':
     while True:
-    	main()
+        sqlite_start()
+        main()
