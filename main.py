@@ -41,18 +41,43 @@ def menu():
   print("Hai scelto di uscire, Grazie!")
   return 0
 
+class Immobile():
+    catalogo = "X"
+    def __init__(self, proprietario=None, indirizzo=None, prezzo=None, classe_energ=None):
+        self.proprietario=proprietario
+        self. indirizzo=indirizzo
+        self.prezzo=prezzo
+        self.classe_energ=classe_energ
+    
 
+#Immagino di avere come Clienti anche affittuari quindi creo una classe base Cliente e altre classi come Proprietario piu' specifiche
+class Cliente():
+    def __init__(self, nome=None, cognome=None, indirizzo=None, telefono=None):
+        self.nome=nome
+        self.cognome=cognome
+        self.indirizzo=indirizzo
+        self.telefono=telefono
+class Proprietario(Cliente):
+    def __init__(self, nome=None, cognome=None, indirizzo=None, telefono=None, proprieta=None):
+        super().__init__(nome=nome, cognome=cognome, indirizzo=indirizzo, telefono=None)
+        self.proprieta
+        
+        
 
 def main():
     print(testo.banner)
     print("sono qui")
     scelta = menu()
     if scelta == 1:
-        print("scelta 1")
+        immobile1 = Immobile(proprietario="proprietario1", indirizzo= "via rossi 43 Roma", prezzo = 990000, classe_energ="F")
+        print(immobile1.indirizzo)
+        print(immobile1.catalogo)
+        input("digita un tasto per continuare.....")
     elif scelta == 2:
-        pass
+        immobile1.__set_catalog__()
     else:
         pass
 
 if __name__ == '__main__':
-	main()
+    while True:
+    	main()
