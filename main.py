@@ -85,6 +85,15 @@ class Immobile():
             if self.catalogo == catalogo:
                 print(f"\nProprietario ID: {self.proprietario} \nsito in : {self.indirizzo} - \nClasse Energetica : {self.classe_energ} - \n Prezzo: {self.prezzo} \n Catalogo : {self.catalogo}")
             return  True
+    def ricerca(self, ricerca):
+        if self.indirizzo == ricerca:
+            print(f"\nProprietario ID: {self.proprietario} \nsito in : {self.indirizzo} - \nClasse Energetica : {self.classe_energ} - \n Prezzo: {self.prezzo} \n Catalogo : {self.catalogo}")
+
+
+
+
+
+
 #Immagino di avere come Clienti anche affittuari quindi creo una classe base Cliente e altre classi come Proprietario piu' specifiche
 class Cliente():
     def __init__(self, nome=None, cognome=None, indirizzo=None, telefono=None):
@@ -177,7 +186,10 @@ def main():
         input("digita un tasto per continuare.....")
     elif  scelta == 7:
         # CERCA IMMOBILE PER INDIRIZZO
-        pass
+        scel = input("Digita l'indirizzo da ricercare.... ")
+        for el in immobili:
+            el.ricerca(scel)
+        input("digita un tasto per continuare.....")
     elif scelta == 8:
         # STAMPA CATALOGO
         scel = input("Quale catalogo vuoi stampare? o(Popolare) v(Vacanze, p(Prestigio)  ")
@@ -188,7 +200,7 @@ def main():
                 el.stampa_catalogo("Vacanze")
             elif scel == "p":
                 el.stampa_catalogo("Prestigio")
-         input("digita un tasto per continuare.....")
+        input("digita un tasto per continuare.....")
 
     else:
         pass
