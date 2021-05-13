@@ -76,7 +76,13 @@ class Immobile():
     def ricerca(self, ricerca):
         if self.indirizzo == ricerca:
             print(f"\nProprietario ID: {self.proprietario} \nsito in : {self.indirizzo} - \nClasse Energetica : {self.classe_energ} - \n Prezzo: {self.prezzo} \n Catalogo : {self.catalogo}")
-
+       
+    def salva_in_sqlite(self):
+        global db_filename
+        with sqlite3.connect(db_filename) as conn:
+            cursor = conn.cursor()
+            cursor.execute('insert into immobili (proprietario, indirizzo, classe_energ, prezzo) values (?, ?, ?, ?)', (self.proprietario,  self.indirizzo, self.classe_energ, self.prezzo))
+            
 
 #Immagino di avere come Clienti anche affittuari quindi creo una classe base Cliente e altre classi come Proprietario piu' specifiche
 class Cliente():
@@ -90,14 +96,22 @@ class Cliente():
     def mod_attributo(self, a):
         pass
     def stampa_caratteristiche(self):
-        print(f"\nCliente Sig. {self.nome} {self.cognome} \nIndirizzo: {self.indirizzo} \nTelefono: {self.telefono}")
+        print(f"\nID Cliente: {self.id} \nCliente Sig. {self.nome} {self.cognome} \nIndirizzo: {self.indirizzo} \nTelefono: {self.telefono}")
         return True
+    
 class Proprietario(Cliente):
     """La Classe Proprietario contiene tutte le info relative al Cliente proprietario di almeno un immobile """
     def __init__(self,id=None, nome=None, cognome=None, indirizzo=None, telefono=None, proprieta=None):
-        super().__init__(id=id, nome=nome, cognome=cognome, indirizzo=indirizzo, telefono=None)
+        super().__init__(id=id, nome=nome, cognome=cognome, indirizzo=indirizzo, telefono=telefono)
         self.proprieta = proprieta
-        
+    
+    def salva_in_sqlite(self):
+        global db_filename
+        with sqlite3.connect(db_filename) as conn:
+            cursor = conn.cursor()
+            print(self.telefono)
+            cursor.execute('insert into clienti (nome, cognome, indirizzo, telefono, proprieta) values (?, ?, ?, ?, ?)', (self.nome, self.cognome, self.indirizzo, self.telefono, self.proprieta))
+            
 
 
 # LE FUNZIONI
@@ -110,7 +124,7 @@ def menu():
     print(" INSERIMENTO IMMOBILE  .........digita 1 --> ")
     print(" MODIFICA IMMOBILE     .........digita 2 --> ")
     print(" CANCELLA IMMOBILE     .........digita 3 --> ")
-    print(" STAMPA CATALGO IMMOBIBILI......digita 4 --> ")
+    print(" STAMPA TUTTI GLI IMMOBILI......digita 4 --> ")
     print(" INSERISCI NUOVO CLIENTE........digita 5 --> ")
     print(" STAMPA ANAGRAFICA CLIENTI......digita 6 --> ")
     print(" CERCA IMMOBILE PER INDIRIZZO...digita 7 --> ")
@@ -162,7 +176,7 @@ def main():
         classe_energ = input("inserisci classe energetica dell'immobile (A - B - ..- G) : ")
         immobile = Immobile(proprietario=proprietario, indirizzo= indirizzo, prezzo = prezzo, classe_energ=classe_energ)
         immobili.append(immobile)
-        
+        immobile.salva_in_sqlite()
         input("digita un tasto per continuare.....")
     elif scelta == 2:
         # MODIFICA IMMOBILE
@@ -209,6 +223,7 @@ def main():
         proprieta = input("inserisci ID proprita Cliente")
         cliente = Proprietario(nome=nome, cognome=cognome, indirizzo= indirizzo, telefono=telefono, proprieta=proprieta)
         clienti.append(cliente)
+        cliente.salva_in_sqlite()
         input("digita un tasto per continuare.....")
     elif scelta == 6:
         # STAMPA ANAGRAFICA CLIENTE
@@ -266,14 +281,8 @@ def sqlite_start():
             immobili.append(immobile)
 
 
-def sqlite_save():
-    """La funzione consente di salvare i dati dopo l'immissione manuale da menu"""
-    #forse la cosa migliore e' fare questa operazione come modulo della classe - va considerata questa possibilita' -
-    #  e magari ricaricate le liste ogni modifica o aggiunta - da pensarci a mente fresca
-    pass
-
 # MAIN
 if __name__ == '__main__':
+    sqlite_start()
     while True:
-        sqlite_start()
         main()
