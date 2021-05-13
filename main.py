@@ -7,7 +7,68 @@ cont = 0
 clienti = []
 immobili = []
 
+# LE CLASSI
+class Immobile():
+    """Classe Immobile contiene tutte le informazioni relative all'immobile"""
+    def __init__(self, proprietario=None, indirizzo=None, prezzo=None, classe_energ=None):
+        self.proprietario=proprietario
+        self. indirizzo=indirizzo
+        self.prezzo=prezzo
+        self.classe_energ=classe_energ
+        if int(self.prezzo) <=100000:
+            cat = "Popolare"
+        elif int(self.prezzo) > 100000 and int(self.prezzo) <= 250000:
+            cat = "Vacanze"
+        else:
+            cat = "Prestigio"
+        self.catalogo = cat
+    def mod_attributo(self, a): # a riceve una tupla(attributo_da_modificare, nuovo_valore_attributo)
+        if a[0]=="proprietario":
+            self.proprietario = a[1]
+        elif a[0]=="indirizzo":
+            self.indirizzo = a[1]
+        elif a[0]=="prezzo":
+            self.prezzo = a[1]
+        elif a[0]=="classe_energ":
+            self.classe_energ = a[1]
+        else:
+            return False
+        return True
+    # Le tre funzioni qui sotto possono essere raggruppate in una soltanto (fanno tutte solo la stampa di qualche dato della classe)
+    def stampa_caratteristiche(self):
+        print(f"\nProprietario ID: {self.proprietario} \nsito in : {self.indirizzo} - \nClasse Energetica : {self.classe_energ} - \n Prezzo: {self.prezzo} \n Catalogo : {self.catalogo}")
+        return True
+    def stampa_catalogo(self, catalogo):
+            if self.catalogo == catalogo:
+                print(f"\nProprietario ID: {self.proprietario} \nsito in : {self.indirizzo} - \nClasse Energetica : {self.classe_energ} - \n Prezzo: {self.prezzo} \n Catalogo : {self.catalogo}")
+            return  True
+    def ricerca(self, ricerca):
+        if self.indirizzo == ricerca:
+            print(f"\nProprietario ID: {self.proprietario} \nsito in : {self.indirizzo} - \nClasse Energetica : {self.classe_energ} - \n Prezzo: {self.prezzo} \n Catalogo : {self.catalogo}")
 
+
+#Immagino di avere come Clienti anche affittuari quindi creo una classe base Cliente e altre classi come Proprietario piu' specifiche
+class Cliente():
+    """Classe Cliente contiene tutte le informazioni relative alla anagrafica Cliente """
+    def __init__(self, nome=None, cognome=None, indirizzo=None, telefono=None):
+        self.nome=nome
+        self.cognome=cognome
+        self.indirizzo=indirizzo
+        self.telefono=telefono
+    def mod_attributo(self, a):
+        pass
+    def stampa_caratteristiche(self):
+        print(f"\nCliente Sig. {self.nome} {self.cognome} \nIndirizzo: {self.indirizzo} \nTelefono: {self.telefono}")
+        return True
+class Proprietario(Cliente):
+    """La Classe Proprietario contiene tutte le info relative al Cliente proprietario di almeno un immobile """
+    def __init__(self, nome=None, cognome=None, indirizzo=None, telefono=None, proprieta=None):
+        super().__init__(nome=nome, cognome=cognome, indirizzo=indirizzo, telefono=None)
+        self.proprieta = proprieta
+        
+
+
+# LE FUNZIONI
 def menu():
   """Menu grafico testuale per programma di gestione Immobili """
   x = 1
@@ -50,70 +111,10 @@ def menu():
       x = 1
   print("Hai scelto di uscire, Grazie!")
   return 0
-
-class Immobile():
-    
-    def __init__(self, proprietario=None, indirizzo=None, prezzo=None, classe_energ=None):
-        self.proprietario=proprietario
-        self. indirizzo=indirizzo
-        self.prezzo=prezzo
-        self.classe_energ=classe_energ
-        if int(self.prezzo) <=100000:
-            cat = "Popolare"
-        elif int(self.prezzo) > 100000 and int(self.prezzo) <= 250000:
-            cat = "Vacanze"
-        else:
-            cat = "Prestigio"
-        self.catalogo = cat
-
-    def mod_attributo(self, a): # a riceve una tupla(attributo_da_modificare, nuovo_valore_attributo)
-        if a[0]=="proprietario":
-            self.proprietario = a[1]
-        elif a[0]=="indirizzo":
-            self.indirizzo = a[1]
-        elif a[0]=="prezzo":
-            self.prezzo = a[1]
-        elif a[0]=="classe_energ":
-            self.classe_energ = a[1]
-        else:
-            return False
-        return True
-    def stampa_caratteristiche(self):
-        print(f"\nProprietario ID: {self.proprietario} \nsito in : {self.indirizzo} - \nClasse Energetica : {self.classe_energ} - \n Prezzo: {self.prezzo} \n Catalogo : {self.catalogo}")
-        return True
-    def stampa_catalogo(self, catalogo):
-            if self.catalogo == catalogo:
-                print(f"\nProprietario ID: {self.proprietario} \nsito in : {self.indirizzo} - \nClasse Energetica : {self.classe_energ} - \n Prezzo: {self.prezzo} \n Catalogo : {self.catalogo}")
-            return  True
-    def ricerca(self, ricerca):
-        if self.indirizzo == ricerca:
-            print(f"\nProprietario ID: {self.proprietario} \nsito in : {self.indirizzo} - \nClasse Energetica : {self.classe_energ} - \n Prezzo: {self.prezzo} \n Catalogo : {self.catalogo}")
-
-
-
-
-
-
-#Immagino di avere come Clienti anche affittuari quindi creo una classe base Cliente e altre classi come Proprietario piu' specifiche
-class Cliente():
-    def __init__(self, nome=None, cognome=None, indirizzo=None, telefono=None):
-        self.nome=nome
-        self.cognome=cognome
-        self.indirizzo=indirizzo
-        self.telefono=telefono
-    def mod_attributo(self, a):
-        pass
-    def stampa_caratteristiche(self):
-        print(f"\nCliente Sig. {self.nome} {self.cognome} \nIndirizzo: {self.indirizzo} \nTelefono: {self.telefono}")
-        return True
-class Proprietario(Cliente):
-    def __init__(self, nome=None, cognome=None, indirizzo=None, telefono=None, proprieta=None):
-        super().__init__(nome=nome, cognome=cognome, indirizzo=indirizzo, telefono=None)
-        self.proprieta = proprieta
-        
         
 
 def main():
+    """ Funzione principale"""
     global cont
     if cont == 0:
         print(testo.banner)
@@ -205,6 +206,8 @@ def main():
     else:
         pass
 
+
+# MAIN
 if __name__ == '__main__':
     while True:
     	main()
