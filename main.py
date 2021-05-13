@@ -48,7 +48,19 @@ class Immobile():
         self. indirizzo=indirizzo
         self.prezzo=prezzo
         self.classe_energ=classe_energ
-    
+    def mod_attributo(self, a): # a riceve una tupla(attributo_da_modificare, nuovo_valore_attributo)
+        if a[0]=="proprietario":
+            self.proprietario = a[1]
+        elif a[0]=="indirizzo":
+            self.indirizzo = a[1]
+        elif a[0]=="prezzo":
+            self.prezzo = a[1]
+        elif a[0]=="classe_energ":
+            self.classe_energ = a[1]
+        else:
+            return False
+        return True
+
 
 #Immagino di avere come Clienti anche affittuari quindi creo una classe base Cliente e altre classi come Proprietario piu' specifiche
 class Cliente():
@@ -57,6 +69,9 @@ class Cliente():
         self.cognome=cognome
         self.indirizzo=indirizzo
         self.telefono=telefono
+    def mod_attributo(self, a):
+        pass
+
 class Proprietario(Cliente):
     def __init__(self, nome=None, cognome=None, indirizzo=None, telefono=None, proprieta=None):
         super().__init__(nome=nome, cognome=cognome, indirizzo=indirizzo, telefono=None)
@@ -65,16 +80,56 @@ class Proprietario(Cliente):
         
 
 def main():
-    print(testo.banner)
-    print("sono qui")
+    cont = 0
+    if cont == 0:
+        print(testo.banner)
+        cont = 1
     scelta = menu()
+    immobili=[]
+    # INSERIMENTO IMMOBILE
     if scelta == 1:
-        immobile1 = Immobile(proprietario="proprietario1", indirizzo= "via rossi 43 Roma", prezzo = 990000, classe_energ="F")
-        print(immobile1.indirizzo)
-        print(immobile1.catalogo)
+        proprietario = input("inserisci ID proprietario : ")
+        indirizzo = input("inserisci indirizzo immobile : ")
+        prezzo = input(" inserisci il prezzo dell'immobile : ")
+        classe_energ = input("inserisci classe energetica dell'immobile (A - B - ..- G) : ")
+        immobile = Immobile(proprietario=proprietario, indirizzo= indirizzo, prezzo = prezzo, classe_energ=classe_energ)
+        immobili.append(immobile)
         input("digita un tasto per continuare.....")
     elif scelta == 2:
-        immobile1.__set_catalog__()
+        # MODIFICA IMMOBILE
+        for n, el in enumerate (immobili):
+            print(n, el.proprietario, el.indirizzo)
+        imm = input("Quale immobile vuoi modificare ? : ")
+        
+        sel = input("seleziona quale voce modificare p(propietario) - i(indirizzo) - z(prezzo) - c(classe energetica) : ")
+        if sel == "p":
+            proprietario = input("inserisci ID proprietario : ")
+            immobili[imm-1].mod_attributo(a=("proprietario", proprietario )
+        elif sel == "i":
+            indirizzo = input("inserisci indirizzo immobile : ")
+            immobili[imm-1].mod_attributo(a=("indirizzo", indirizzo ))
+        elif sel == "z":
+            prezzo = input(" inserisci il prezzo dell'immobile : ")
+            immobili[imm-1].mod_attributo(a=("prezzo", prezzo ))
+        elif sel == "c":
+            classe_energ = input("inserisci classe energetica dell'immobile (A - B - ..- G) : ")
+            immobili[imm-1].mod_attributo(a=("classe_energ", classe_energ ))
+
+    elif scelta == 3:
+        # CANCELLAZIONE IMMOBILE
+        pass
+    elif scelta == 4:
+        # STAMPA CATALOGO IMMOBILI
+        pass
+
+    elif scelta == 5:
+        # INSERISCI NUOVO CLIENTE
+        pass
+
+    elif scelta == 6:
+        # STAMPA ANAGRAFICA CLIENTE
+        pass
+
     else:
         pass
 
