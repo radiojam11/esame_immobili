@@ -7,12 +7,42 @@ cont = 0
 clienti = []
 immobili = []
 
+
+#SQLite  Creo il file del data vase se ancora non esiste e ci costruisco dentro  1 Cliente esempio ed un immobile esempio (si troveranno all' ID 1)
+import os
+import sqlite3
+
+db_filename = 'sqlite_immobiliare.db'
+tabelle = 'tabelle.sql'
+db_is_new = not os.path.exists(db_filename)
+
+with sqlite3.connect(db_filename) as conn:
+    if db_is_new:
+        print('Creo le tabelle del DataBase')
+        with open(tabelle, 'rt') as f:
+            t = f.read()
+        conn.executescript(t)
+        # inserimento di un immobile di esempio
+        conn.execute("""
+        insert into immobili (proprietario, indirizzo, prezzo, classe_energ)
+        values ('1', 'via ESEMPIO', '50', 'G')
+        """)
+        # inserimento di Cliente di esempio
+        conn.execute("""
+        insert into clienti (nome, cognome, indirizzo, telefono, proprieta)
+        values ('Esempio', 'Esempio','via ESEMPIO', '1111', '1')
+        """)
+    else:
+        pass
+
+
+
 # LE CLASSI
 class Immobile():
     """Classe Immobile contiene tutte le informazioni relative all'immobile"""
     def __init__(self, proprietario=None, indirizzo=None, prezzo=None, classe_energ=None):
         self.proprietario=proprietario
-        self. indirizzo=indirizzo
+        self.indirizzo=indirizzo
         self.prezzo=prezzo
         self.classe_energ=classe_energ
         if int(self.prezzo) <=100000:
