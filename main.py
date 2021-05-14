@@ -41,13 +41,16 @@ with sqlite3.connect(db_filename) as conn:
 # Tutte le altre Funzioni sono contenute nel file Funzioni - Qui solo Main
 def main():
     """ Funzione principale"""
+    #stampo il banner solo 1 volta alla partenza
     global cont
     if cont == 0:
         print(testo.banner)
         cont = 1
+    #ricevo la scelta dal menu
     scelta = menu()
     global clienti
     global immobili
+    # gestisco la scelta dell'utente
     # INSERIMENTO IMMOBILE
     if scelta == 1:
         inserisci_immobile()
@@ -59,19 +62,16 @@ def main():
         modifica_immobile()
         sqlite_start()
         print(" modifica con successo")
-
     elif scelta == 3:
         # CANCELLAZIONE IMMOBILE
         cancella_immobile()
         sqlite_start()
         input("digita un tasto per continuare.....")
         pass
-        
     elif scelta == 4:
         # STAMPA CATALOGO IMMOBILI
         stampa_immobili()
         input("digita un tasto per continuare.....")
-
     elif scelta == 5:
         # INSERISCI NUOVO CLIENTE
         inserisci_cliente()
@@ -90,7 +90,8 @@ def main():
         # STAMPA CATALOGO
         stampa_catalogo()
         input("digita un tasto per continuare.....")
-
+    elif scelta == 0:
+        exit(222)
     else:
         pass
 

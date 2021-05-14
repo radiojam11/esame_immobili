@@ -41,7 +41,7 @@ def menu():
       return 8
     elif x == "0":
       x = 0
-      exit(222)
+      
     else:
       print(" Scelta non valida - solo numeri da 0 a 6")
       x = 1
@@ -78,9 +78,10 @@ def sqlite_start():
             id, proprietario,  indirizzo, prezzo, classe_energ = row
             immobile = Immobile(id=id, proprietario=proprietario, indirizzo= indirizzo, prezzo = prezzo, classe_energ=classe_energ)
             immobili.append(immobile)
-
+    return True
 
 def inserisci_immobile():
+    """la Funzione inserisce un nuovo immobile nellal ista (1Caso dell'esame) e inserisce un nuovo utente nel DB (2 caso del'esame)"""
     proprietario = input("inserisci ID proprietario : ")
     indirizzo = input("inserisci indirizzo immobile : ")
     prezzo = input(" inserisci il prezzo dell'immobile : ")
@@ -88,8 +89,9 @@ def inserisci_immobile():
     immobile = Immobile(proprietario=proprietario, indirizzo= indirizzo, prezzo = prezzo, classe_energ=classe_energ)
     immobili.append(immobile)
     immobile.salva_in_sqlite()
-
+    return True
 def modifica_immobile():
+        """ La Funzione e' predisposta per modificare gli attributi dell'immmobile dalla lista (nel 1 caso dell'esame) opppure per modificare gli attributi dell'immobile nel DB (2 caso dell'esame) """
         global clienti
         global immobili
         for n, el in enumerate (immobili):
@@ -113,24 +115,30 @@ def modifica_immobile():
             #immobili[imm].mod_attributo(a=("classe_energ", classe_energ ))
             immobili[imm].mod_sqlite(a=("classe_energ", classe_energ, str(el.id) ))
         #Ricarico la lista pulita ed aggiornata
+        return True
 
 
 def cancella_immobile():
-        for n, el in enumerate (immobili):
-            print(f"\nElemento Lista: {n} -\nID db: {el.id} - Proprietario: {el.proprietario} -\nIndirizzo: {el.indirizzo} \nPrezzo: {el.prezzo} - Classe En.: {el.classe_energ}\n\n")
-        imm = int(input("Quale immobile vuoi Cancellare ? : "))
-        #immobili.pop(imm)
-        #Modificato sistema Cancellazione - adesso cancello da DB e ricarico liste a fine operazione
-        #chiamo modulo specifico e passo numero id da cancellare
-        immobili[imm].rem_sqlite(str(el.id) )
-        #ricarico la lista pulita ed aggiornata
+    """La Funzione e' predisposta per eliminare un utente dalla lista (punto 1 dell'esercizio) o per cancella un utente dal DB (punto 2 del'esercizio)"""
+    for n, el in enumerate (immobili):
+        print(f"\nElemento Lista: {n} -\nID db: {el.id} - Proprietario: {el.proprietario} -\nIndirizzo: {el.indirizzo} \nPrezzo: {el.prezzo} - Classe En.: {el.classe_energ}\n\n")
+    imm = int(input("Quale immobile vuoi Cancellare ? : "))
+    #immobili.pop(imm)
+    #Modificato sistema Cancellazione - adesso cancello da DB e ricarico liste a fine operazione
+    #chiamo modulo specifico e passo numero id da cancellare
+    immobili[imm].rem_sqlite(str(el.id) )
+    #ricarico la lista pulita ed aggiornata
+    return True
 
 def stampa_immobili():
+    """La Funzione stampa tutti gli immobili della lista """
     for el in immobili:
         el.stampa_caratteristiche()
         print("------------------------")
+    return True
 
 def inserisci_cliente():
+    """La Funzione inserisce il nuovo Cliente in lista (per il punto 1 dell'esercizio) e lo salva nel DB (punto 2 dell'esercizio) """
     nome = input("inserisci nome Cliente : ")
     cognome = input("inserisci cognome Cliente : ")
     indirizzo = input("inserisci indirizzo Cliente : ")
@@ -139,19 +147,24 @@ def inserisci_cliente():
     cliente = Proprietario(nome=nome, cognome=cognome, indirizzo= indirizzo, telefono=telefono, proprieta=proprieta)
     clienti.append(cliente)
     cliente.salva_in_sqlite()
+    return True
 
 def stampa_anagrafica_cliente():
-    for num, el in enumerate (clienti):
+    """La funzione stampa tutti i clienti presenti nella lista """
+    for el in clienti:
             el.stampa_caratteristiche()
             print("----------------------")
-
+    return True
         
 def cerca_immobile():
-     scel = input("Digita l'indirizzo da ricercare.... ")
-     for el in immobili:
+    """La funzione cerca i'immobile in funzione dell'indirizzo (l'indirizzo deve essere esatto) """
+    scel = input("Digita l'indirizzo da ricercare.... ")
+    for el in immobili:
             el.ricerca(scel)
+    return True
 
 def stampa_catalogo():
+    """La funzione itera la lista degli oggetti immobile e attua la scelta  di stampa dell'utente """
     scel = input("Quale catalogo vuoi stampare? o(Popolare) v(Vacanze, p(Prestigio)  ")
     for el in immobili:
         if scel == "o":
@@ -160,3 +173,4 @@ def stampa_catalogo():
             el.stampa_catalogo("Vacanze")
         elif scel == "p":
             el.stampa_catalogo("Prestigio")
+    return True
