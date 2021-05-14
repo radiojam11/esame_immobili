@@ -16,6 +16,7 @@ db_filename = 'sqlite_immobiliare.db'
 tabelle = 'tabelle.sql'
 db_is_new = not os.path.exists(db_filename)
 
+#Controllo se esiste il file DB - altrimento lo creo -  creo le tabelle dati - creo record di prova uno x tabella
 with sqlite3.connect(db_filename) as conn:
     if db_is_new:
         print('Creo le tabelle del DataBase')
@@ -86,7 +87,7 @@ class Immobile():
             
         return True
 
-    # Le tre funzioni qui sotto possono essere raggruppate in una soltanto (fanno tutte solo la stampa di qualche dato della classe)
+    # Le tre funzioni qui sotto possono essere raggruppate in una soltanto (fanno tutte solo la stampa di qualche dato della classe) - atempo debito!
     def stampa_caratteristiche(self):
         print(f"\nProprietario ID: {self.proprietario} \nsito in : {self.indirizzo} - \nClasse Energetica : {self.classe_energ} - \n Prezzo: {self.prezzo} \n Catalogo : {self.catalogo}")
         return True
@@ -103,7 +104,11 @@ class Immobile():
         with sqlite3.connect(db_filename) as conn:
             cursor = conn.cursor()
             cursor.execute('insert into immobili (proprietario, indirizzo, classe_energ, prezzo) values (?, ?, ?, ?)', (self.proprietario,  self.indirizzo, self.classe_energ, self.prezzo))
-            
+    def rem_sqlite(self, id):
+            global db_filename
+            with sqlite3.connect(db_filename) as conn:
+                cursor = conn.cursor()
+                cursor.execute(f'delete from immobili where id = {id}') # oppure posso prendere il dato da this:  cursor.execute('delete from immobili where id = {self.id}')
 
 #Immagino di avere come Clienti anche affittuari quindi creo una classe base Cliente e altre classi come Proprietario piu' specifiche
 class Cliente():
@@ -198,6 +203,8 @@ def main():
         immobile = Immobile(proprietario=proprietario, indirizzo= indirizzo, prezzo = prezzo, classe_energ=classe_energ)
         immobili.append(immobile)
         immobile.salva_in_sqlite()
+        #ricarico la lista
+        sqlite_start()
         input("digita un tasto per continuare.....")
     elif scelta == 2:
         # MODIFICA IMMOBILE
@@ -228,9 +235,14 @@ def main():
     elif scelta == 3:
         # CANCELLAZIONE IMMOBILE
         for n, el in enumerate (immobili):
-            print(n, el.proprietario, el.indirizzo, el.prezzo)
+            print(f"\nElemento Lista: {n} -\nID db: {el.id} - Proprietario: {el.proprietario} -\nIndirizzo: {el.indirizzo} \nPrezzo: {el.prezzo} - Classe En.: {el.classe_energ}\n\n")
         imm = int(input("Quale immobile vuoi Cancellare ? : "))
-        immobili.pop(imm)
+        #immobili.pop(imm)
+        #Modificato sistema Cancellazione - adesso cancello da DB e ricarico liste a fine operazione
+        #chiamo modulo specifico e passo numero id da cancellare
+        immobili[imm].rem_sqlite(str(el.id) )
+        #ricarico la lista pulita ed aggiornata
+        sqlite_start()
         input("digita un tasto per continuare.....")
         pass
         
@@ -251,6 +263,8 @@ def main():
         cliente = Proprietario(nome=nome, cognome=cognome, indirizzo= indirizzo, telefono=telefono, proprieta=proprieta)
         clienti.append(cliente)
         cliente.salva_in_sqlite()
+        #ricarico la lista pulita ed aggiornata
+        sqlite_start()
         input("digita un tasto per continuare.....")
     elif scelta == 6:
         # STAMPA ANAGRAFICA CLIENTE
