@@ -8,7 +8,7 @@ clienti = []
 immobili = []
 
 
-#SQLite  Creo il file del data base se ancora non esiste e ci costruisco dentro  1 Cliente esempio ed un Immobile esempio (si troveranno all' ID 1)
+#SQLite  Creo il file del data base se ancora non esiste e ci costruisco dentro  1 Cliente esempio ed 1 Immobile esempio (si troveranno all' ID 1)
 import os
 import sqlite3
 
@@ -54,6 +54,7 @@ class Immobile():
             cat = "Prestigio"
         self.catalogo = cat
     def mod_attributo(self, a): # a riceve una tupla(attributo_da_modificare, nuovo_valore_attributo)
+        """Modulo per la modifica dei singoli attributi della Classe per operazioni su lista (versione di base del sw) """
         if a[0]=="proprietario":
             self.proprietario = a[1]
         elif a[0]=="indirizzo":
@@ -65,6 +66,26 @@ class Immobile():
         else:
             return False
         return True
+    def mod_sqlite(self, a):
+        """Modulo per la modifica dei singoli attributi della Classe - Scelta: modificare direttamente nel DB e ricaricare il DB ogni volta su lista pulita """
+        global db_filename
+        if a[0]=="proprietario":
+            stringa =f'update immobili set proprietario = {a[1]} where id = {a[2]}' 
+        elif a[0]=="indirizzo":
+            stringa =f'update immobili set indirizzo = "{a[1]}" where id = {a[2]}' 
+        elif a[0]=="prezzo":
+            stringa =f'update immobili set prezzo = {a[1]} where id = {a[2]}' 
+        elif a[0]=="classe_energ":
+            stringa =f'update immobili set classe_energ = {a[1]} where id = {a[2]}'
+        else:
+            return False
+        #scrivo la modifica su DB
+        with sqlite3.connect(db_filename) as conn:
+            cursor = conn.cursor()
+            cursor.execute(stringa)
+            
+        return True
+
     # Le tre funzioni qui sotto possono essere raggruppate in una soltanto (fanno tutte solo la stampa di qualche dato della classe)
     def stampa_caratteristiche(self):
         print(f"\nProprietario ID: {self.proprietario} \nsito in : {self.indirizzo} - \nClasse Energetica : {self.classe_energ} - \n Prezzo: {self.prezzo} \n Catalogo : {self.catalogo}")
@@ -181,21 +202,27 @@ def main():
     elif scelta == 2:
         # MODIFICA IMMOBILE
         for n, el in enumerate (immobili):
-            print(n, el.proprietario, el.indirizzo)
-        imm = int(input("Quale immobile vuoi modificare ? : "))
+            print(f"\nElemento Lista: {n} -\nID db: {el.id} - Proprietario: {el.proprietario} -\nIndirizzo: {el.indirizzo} \nPrezzo: {el.prezzo} - Classe En.: {el.classe_energ}\n\n")
+        imm = int(input("Quale Elemento Lista immobile vuoi modificare ? : "))
         sel = input("seleziona quale voce modificare p(propietario) - i(indirizzo) - z(prezzo) - c(classe energetica) : ")
         if sel == "p":
             proprietario = input("inserisci ID proprietario : ")
-            immobili[imm].mod_attributo(a=("proprietario", proprietario ))
+            # La tupla si trasforma rispetto alla versione base - viene aggiunto l'elemento ID x la query corretta
+            immobili[imm].mod_sqlite(a=("proprietario", str(proprietario), str(el.id) ))
         elif sel == "i":
             indirizzo = input("inserisci indirizzo immobile : ")
-            immobili[imm].mod_attributo(a=("indirizzo", indirizzo ))
+            #immobili[imm].mod_attributo(a=("indirizzo", indirizzo ))
+            immobili[imm].mod_sqlite(a=("indirizzo", indirizzo, str(el.id) ))
         elif sel == "z":
             prezzo = input("inserisci il prezzo dell'immobile : ")
-            immobili[imm].mod_attributo(a=("prezzo", prezzo ))
+            #immobili[imm].mod_attributo(a=("prezzo", prezzo ))
+            immobili[imm].mod_sqlite(a=("prezzo", prezzo, str(el.id) ))
         elif sel == "c":
             classe_energ = input("inserisci classe energetica dell'immobile (A - B - ..- G) : ")
-            immobili[imm].mod_attributo(a=("classe_energ", classe_energ ))
+            #immobili[imm].mod_attributo(a=("classe_energ", classe_energ ))
+            immobili[imm].mod_sqlite(a=("classe_energ", classe_energ, str(el.id) ))
+        #Ricarico la lista pulita ed aggiornata
+        sqlite_start()
         print(" modifica con successo")
 
     elif scelta == 3:
@@ -258,6 +285,9 @@ def sqlite_start():
     global db_filename
     global clienti
     global immobili
+    #ripulisco le liste per riempirle ex-novo ogni chiamata della funzione
+    clienti = []
+    immobili = []
     with sqlite3.connect(db_filename) as conn:
         cursor = conn.cursor()
         # carico tutti i clienti eccetto ID 1 che e' il cliente ESEMPIO
@@ -283,6 +313,6 @@ def sqlite_start():
 
 # MAIN
 if __name__ == '__main__':
-    sqlite_start()
+    sqlite_start() # carico i dati dal DB
     while True:
         main()
