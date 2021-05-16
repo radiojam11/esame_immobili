@@ -1,25 +1,30 @@
-import os
-import sqlite3
-from funzioni import *
-from main import *
-import peewee
+############################ CLASSI PEEWEE   CASO 3 ##################################
+
+# indirizzo del file di DB peewee
+db_pw = peewee.SqliteDatabase("immobiliare.db")
 
 # LE CLASSI
-class Immobile():
+class Immobile_pw(peewee.Model):
     """Classe Immobile contiene tutte le informazioni relative all'immobile"""
-    def __init__(self, id=None, proprietario=None, indirizzo=None, prezzo=None, classe_energ=None):
-        self.id=id
-        self.proprietario=proprietario
-        self.indirizzo=indirizzo
-        self.prezzo=prezzo
-        self.classe_energ=classe_energ
-        if int(self.prezzo) <=100000:
-            cat = "Popolare"
-        elif int(self.prezzo) > 100000 and int(self.prezzo) <= 250000:
-            cat = "Vacanze"
-        else:
-            cat = "Prestigio"
-        self.catalogo = cat
+    proprietario=peewee.CharField()
+    indirizzo=peewee.CharField()
+    prezzo=peewee.CharField()
+    classe_energ=peewee.CharField()
+    catalogo = peewee.CharField()
+    
+    class Meta:
+        databese = db_pw
+        db_table = "immobili"
+    """
+    if int(prezzo) <=100000:
+        cat = "Popolare"
+    elif int(prezzo) > 100000 and int(prezzo) <= 250000:
+        cat = "Vacanze"
+    else:
+        cat = "Prestigio"
+    catalogo = cat
+    """
+
     def mod_attributo(self, a): # a riceve una tupla(attributo_da_modificare, nuovo_valore_attributo)
         """Modulo per la modifica dei singoli attributi della Classe per operazioni su lista (versione di base del sw) """
         if a[0]=="proprietario":
@@ -76,30 +81,3 @@ class Immobile():
                 cursor = conn.cursor()
                 cursor.execute(f'delete from immobili where id = {id}') # oppure posso prendere il dato da this:  cursor.execute('delete from immobili where id = {self.id}')
 
-#Immagino di avere come Clienti anche affittuari quindi creo una classe base Cliente e altre classi come Proprietario piu' specifiche
-class Cliente():
-    """Classe Cliente contiene tutte le informazioni relative alla anagrafica Cliente """
-    def __init__(self, id=None, nome=None, cognome=None, indirizzo=None, telefono=None):
-        self.id=id
-        self.nome=nome
-        self.cognome=cognome
-        self.indirizzo=indirizzo
-        self.telefono=telefono
-    def mod_attributo(self, a):
-        pass
-    def stampa_caratteristiche(self):
-        print(f"\nID Cliente: {self.id} \nCliente Sig. {self.nome} {self.cognome} \nIndirizzo: {self.indirizzo} \nTelefono: {self.telefono}")
-        return True
-    
-class Proprietario(Cliente):
-    """La Classe Proprietario contiene tutte le info relative al Cliente proprietario di almeno un immobile """
-    def __init__(self,id=None, nome=None, cognome=None, indirizzo=None, telefono=None, proprieta=None):
-        super().__init__(id=id, nome=nome, cognome=cognome, indirizzo=indirizzo, telefono=telefono)
-        self.proprieta = proprieta
-    
-    def salva_in_sqlite(self):
-        global db_filename
-        with sqlite3.connect(db_filename) as conn:
-            cursor = conn.cursor()
-            cursor.execute('insert into clienti (nome, cognome, indirizzo, telefono, proprieta) values (?, ?, ?, ?, ?)', (self.nome, self.cognome, self.indirizzo, self.telefono, self.proprieta))
-            

@@ -43,7 +43,7 @@ def menu():
       x = 0
       
     else:
-      print(" Scelta non valida - solo numeri da 0 a 6")
+      print(" Scelta non valida - solo numeri da 0 a 8")
       x = 1
   print("Hai scelto di uscire, Grazie!")
   return 0
