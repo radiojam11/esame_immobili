@@ -51,14 +51,21 @@ class ClienteFactory():
         if tipo == "p":
             tipo_cliente = Tipo_Cliente.select().where(Tipo_Cliente.tipo_cliente == "Proprietario").get()
         else: 
-            tipo_cliente = Tipo_Cliente.select().where(Tipo_Cliente.nome == "Affittuario").get()
+            tipo_cliente = Tipo_Cliente.select().where(Tipo_Cliente.tipo_cliente == "Affittuario").get()
         cliente = Cliente(nome = nome, cognome = cognome, indirizzo = indirizzo, telefono = telefono, tipo_cliente = tipo_cliente)
         cliente.save()
 
 
 class ImmobileFactory():
     @staticmethod
-    def create_immobile(cliente_id, indirizzo, prezzo, classe_energ, catalogo):
+    def create_immobile(cliente_id, indirizzo, prezzo, classe_energ):
+        if prezzo <= 100000:
+            catalogo = "popolare"
+        elif prezzo >10000 and prezzo <= 250000:
+            catalogo = "casa vacanze"
+        else:
+            catalogo = "prestigio"
+        
         immobile = Immobile(cliente_id = cliente_id, indirizzo = indirizzo, prezzo = prezzo, classe_energ = classe_energ, catalogo = catalogo)
         immobile.save()
 
