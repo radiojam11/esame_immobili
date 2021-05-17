@@ -90,7 +90,17 @@ if __name__ == '__main__':
         # se sono qui il file del DB esiste gia' e do' per scontato 
         # che anche le tabelle ed i record esistano
         db_pw.connect()
+    #----------------------
+    #ClienteFactory.create_cliente("Ugo", "Cimino", "via le mani dal naso 33", "33554445", "p")
+    #ImmobileFactory.create_immobile(2, "via case rotte 77", 19000, "B")
 
+
+
+    ## NON FUNZIONA DA SISTEMARE
+    prestige = Catalogo.select().where(Catalogo.catalogo == "popolare").get()
+    for el in prestige.proprietario:
+        print(el.telefono, el.nome, el.cognome)
+    #--------------------------------------------------------------------------
 
     while True:
         #main()

@@ -58,7 +58,14 @@ class ClienteFactory():
 
 class ImmobileFactory():
     @staticmethod
-    def create_immobile(cliente_id, indirizzo, prezzo, classe_energ, catalogo):
+    def create_immobile(cliente_id, indirizzo, prezzo, classe_energ):
+        if prezzo <= 100000:
+            catalogo = "popolare"
+        elif prezzo >10000 and prezzo <= 250000:
+            catalogo = "casa vacanze"
+        else:
+            catalogo = "prestigio"
+        
         immobile = Immobile(cliente_id = cliente_id, indirizzo = indirizzo, prezzo = prezzo, classe_energ = classe_energ, catalogo = catalogo)
         immobile.save()
 

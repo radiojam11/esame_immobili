@@ -16,7 +16,7 @@ def inserisci_cliente_pw():
       indirizzo = input("inserisci indirizzo Cliente : ")
       telefono = input(" inserisci il telefono dell'Cliente : ")
       proprieta = input("inserisci ID proprita Cliente")
-      cliente_pw = Proprietario_pw(nome=nome, cognome=cognome, indirizzo= indirizzo, telefono=telefono, proprieta=proprieta)
+      #cliente_pw = Proprietario_pw(nome=nome, cognome=cognome, indirizzo= indirizzo, telefono=telefono, proprieta=proprieta)
       pass
 def stampa_anagrafica_cliente_pw():
       pass
