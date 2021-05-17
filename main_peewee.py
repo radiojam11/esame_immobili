@@ -1,13 +1,24 @@
 #Valerio Tognozzi
 # Programma per la gestione Immobiliare
 #
-# Punto n. 3 estensione PeeWee
+############################  PEEWEE   CASO 3 #################################
+# Il sistema sviluppato con PeeWee si rivoluziona completamente.
+# Lascio l'organizzazione basata su liste e lavoro completamente su DB
+# 
+# Lascio inalterato il sistema di selezione delle scelte dell'utente
+# 
 # #
 
+from classi_pw import *
 import testo 
+import peewee
 from funzioni_pw import *
 from classi_pw import *
+import os
 
+# indirizzo del file di DB peewee
+nome_file_db = "immobiliare_pw.db"
+db_pw = peewee.SqliteDatabase(nome_file_db)
 
 
 # Tutte le altre Funzioni sono contenute nel file Funzioni - Qui solo Main
@@ -60,6 +71,28 @@ def main():
 
 # MAIN
 if __name__ == '__main__':
+    # stampo un bannerino pubblicitario!
     print(testo.banner)
+    # se il file DB esiste immagino che esistano anche le varie tabelle e record di categoria 
+    # - altrimenti li creo ex novo
+    if not (os.path.isfile(nome_file_db)):
+        # mi connetto al DB e se non esiste peewee lo crea in automatico
+        db_pw.connect()
+        # creo le tabelle
+        db_pw.create_tables([Tipo_Cliente, Catalogo, Cliente, Immobile])
+        # creo i record delle categorie
+        Tipo_Cliente(tipo_cliente="Proprietario").save()
+        Tipo_Cliente(tipo_cliente="Affittuario").save()
+        Catalogo(catalogo="prestigio").save()
+        Catalogo(catalogo="casa vacanze").save()
+        Catalogo(catalogo="popolare").save()
+    else:
+        # se sono qui il file del DB esiste gia' e do' per scontato 
+        # che anche le tabelle ed i record esistano
+        db_pw.connect()
+
+
     while True:
-        main()
+        #main()
+        pass
+        
