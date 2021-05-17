@@ -91,17 +91,29 @@ if __name__ == '__main__':
         # che anche le tabelle ed i record esistano
         db_pw.connect()
     #----------------------
+<<<<<<< HEAD
     ClienteFactory.create_cliente("Ugo", "Cimino", "via le mani dal naso 33", "33554445", "p")
     ImmobileFactory.create_immobile(2, "via case rotte 77", 19000, "B")
 
 
     """
+=======
+    #ClienteFactory.create_cliente("Ugo", "Cimino", "via le mani dal naso 33", "33554445", "p")
+    #ImmobileFactory.create_immobile(2, "via case rotte 77", 19000, "B")
+
+
+
+>>>>>>> 2605b283c654073decd7ae70bc12050ca2f8b0dd
     ## NON FUNZIONA DA SISTEMARE
     prestige = Catalogo.select().where(Catalogo.catalogo == "popolare").get()
     for el in prestige.proprietario:
         print(el.telefono, el.nome, el.cognome)
     #--------------------------------------------------------------------------
+<<<<<<< HEAD
     """
+=======
+
+>>>>>>> 2605b283c654073decd7ae70bc12050ca2f8b0dd
     while True:
         #main()
         pass
