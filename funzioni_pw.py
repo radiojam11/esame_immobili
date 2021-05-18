@@ -1,11 +1,16 @@
-from classi_pw import *
+
 from main_peewee import *
+from classi_pw import *
+
+
 
 ########################--------------------------Punto 3 PeeWee ---------------------------
 def inserisci_immobile_pw():
       # inserire se vuoi la stampa della lista clienti
-      
-      ImmobileFactory.create_immobile(2, "via case rotte 77", 19000, "B")
+      s = input("Vuoi la lista dei Clienti per scegliere il ID CLiente? (S/N)")
+      if s == "S" or s =="s":
+            cli = 1
+      ImmobileFactory.create_immobile(2, "via grattaceli 111", 19000, "B")
 
 def modifica_immobile_pw():
       pass
@@ -23,7 +28,9 @@ def inserisci_cliente_pw():
       #cliente_pw = Proprietario_pw(nome=nome, cognome=cognome, indirizzo= indirizzo, telefono=telefono, proprieta=proprieta)
       pass
 def stampa_anagrafica_cliente_pw():
-      pass
+      query = Cliente.select()
+      for el in query:
+            print("Nome:", el.nome)
 def cerca_immobile_pw():
       pass
 def stampa_catalogo_pw():

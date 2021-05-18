@@ -9,8 +9,7 @@
 # 
 # #
 
-from classi_pw import *
-import testo 
+import testo
 import peewee
 from funzioni_pw import *
 from classi_pw import *
@@ -27,8 +26,6 @@ def main():
     
     #ricevo la scelta dal menu
     scelta = menu()
-    global clienti
-    global immobili
 
     # gestisco la scelta dell'utente
     if scelta == 1:
@@ -68,9 +65,7 @@ def main():
     else:
         pass
 
-
-# MAIN
-if __name__ == '__main__':
+def at_startup():
     # stampo un bannerino pubblicitario!
     print(testo.banner)
     # se il file DB esiste immagino che esistano anche le varie tabelle e record di categoria 
@@ -90,30 +85,34 @@ if __name__ == '__main__':
         # se sono qui il file del DB esiste gia' e do' per scontato 
         # che anche le tabelle ed i record esistano
         db_pw.connect()
+
+def primi_record():
+    # Creo Clienti e Immobili di test
     #----------------------
-<<<<<<< HEAD
-    ClienteFactory.create_cliente("Ugo", "Cimino", "via le mani dal naso 33", "33554445", "p")
+    ClienteFactory.create_cliente("Mario", "Viterbese", "via Naspi 44", "554445", "p")
+    ClienteFactory.create_cliente("Ugo", "Intini", "via Naspi 44", "2554445", "p")
+    ClienteFactory.create_cliente("Paola", "Antani", "via CassaIntegrazione 4", "2554445", "p")
+    ClienteFactory.create_cliente("Ugo", "Merli", "via poracci 124", "2554445", "a")
     ImmobileFactory.create_immobile(2, "via case rotte 77", 19000, "B")
+    ImmobileFactory.create_immobile(1, "via case nuove 77", 999000, "G")
+    ImmobileFactory.create_immobile(3, "via case alsole 77", 239000, "A")
+
+def stampa_anagrafica_cliente_pw():
+      query = Cliente.select()
+      for el in query:
+            print("Nome:", el.nome)
+
+    
+# MAIN
+if __name__ == '__main__':
+    at_startup()
+    # togliere il cancelletto alla riga qui sotto solo se prima installazione del DB 
+    # per popolare il DB.
+    #primi_record()
 
 
-    """
-=======
-    #ClienteFactory.create_cliente("Ugo", "Cimino", "via le mani dal naso 33", "33554445", "p")
-    #ImmobileFactory.create_immobile(2, "via case rotte 77", 19000, "B")
+    esame_immobili.funzioni_pw.stampa_anagrafica_cliente_pw()
 
-
-
->>>>>>> 2605b283c654073decd7ae70bc12050ca2f8b0dd
-    ## NON FUNZIONA DA SISTEMARE
-    prestige = Catalogo.select().where(Catalogo.catalogo == "popolare").get()
-    for el in prestige.proprietario:
-        print(el.telefono, el.nome, el.cognome)
-    #--------------------------------------------------------------------------
-<<<<<<< HEAD
-    """
-=======
-
->>>>>>> 2605b283c654073decd7ae70bc12050ca2f8b0dd
     while True:
         #main()
         pass

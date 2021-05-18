@@ -13,7 +13,6 @@ class Tipo_Cliente(peewee.Model):
     class  Meta():
         database = db_pw
 
-
 class Catalogo(peewee.Model):
     catalogo = peewee.CharField(unique=True)
     class  Meta():
@@ -25,7 +24,7 @@ class Cliente(peewee.Model):
     cognome = peewee.CharField()
     indirizzo = peewee.CharField()
     telefono = peewee.CharField()
-    tipo_cliente = peewee.ForeignKeyField(Tipo_Cliente, backref="tipo")
+    tipo_cliente = peewee.ForeignKeyField(Tipo_Cliente, backref="tipi_cliente")
     class Meta:
         database = db_pw
         #db_table = "clienti"
@@ -34,7 +33,7 @@ class Cliente(peewee.Model):
 class Immobile(peewee.Model):
     """Classe Immobile contiene tutte le informazioni relative all'immobile"""
     #proprietario=peewee.CharField()
-    cliente_id=peewee.ForeignKeyField(Cliente, backref="proprietario")
+    cliente_id=peewee.ForeignKeyField(Cliente, backref="clienti")
     indirizzo=peewee.CharField()
     prezzo=peewee.IntegerField()
     classe_energ=peewee.CharField()
@@ -65,7 +64,6 @@ class ImmobileFactory():
             catalogo = "casa vacanze"
         else:
             catalogo = "prestigio"
-        
         immobile = Immobile(cliente_id = cliente_id, indirizzo = indirizzo, prezzo = prezzo, classe_energ = classe_energ, catalogo = catalogo)
         immobile.save()
 
