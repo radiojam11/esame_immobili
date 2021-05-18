@@ -6,6 +6,11 @@ import peewee
 from main_peewee import *
 from funzioni_pw import *
 
+
+# indirizzo del file di DB peewee
+nome_file_db = "immobiliare_pw.db"
+db_pw = peewee.SqliteDatabase(nome_file_db)
+
 # LE CLASSI
 
 class Tipo_Cliente(peewee.Model):
