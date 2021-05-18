@@ -7,12 +7,16 @@ Al punto 1 interpreto che si richiede un software che funzioni senza salvare i d
 
 Al punto 2 converto il sistem a all'uso con sqlite
 
-AL punto 3  per poter estendere quanto gia' prodotto devo usare come OMR  Pickle che mi consente di salvare su disco una lista.
+AL punto 3  per poter estendere quanto gia' prodotto devo usare come ORM  Pickle che mi consente di salvare su disco una lista.
 Non ho trovato una forma sufficiente per utilizzare PeeWee con quanto gia' sviluppato. Quindi per utilizzare PeeWee devo riprogettare tutto.
 
 Il punto 4 deve essere fatto prima del punto 1 per poter fare i commit dei punti durante lo sviluppo
 
 ____ Per fare i punti 4 - 1 e 2 ho impiegato circa 10,5 h __
+
+Aggiornamento:
+Ho terminato anche il 3 punto - Tutto funziona regolarmente. circa  4h
+La prossima volta parto da fondo pero'!!!
 
 
 Testo delll'esame:
