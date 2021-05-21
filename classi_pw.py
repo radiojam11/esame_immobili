@@ -65,7 +65,7 @@ class ImmobileFactory():
     def create_immobile(cliente_id, indirizzo, prezzo, classe_energ):
         if prezzo <= 100000:
             catalogo = "popolare"
-        elif prezzo >10000 and prezzo <= 250000:
+        elif prezzo >100000 and prezzo <= 250000:
             catalogo = "casa vacanze"
         else:
             catalogo = "prestigio"

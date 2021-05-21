@@ -15,6 +15,7 @@ def inserisci_immobile_pw():
       prezzo = input("inserisci il prezzo dell' immobile: ")
       classe = input("inserisci Classe Energetica dell'immobile: ")
       ImmobileFactory.create_immobile(int(id_cliente), indirizzo, int(prezzo), classe)
+      return True
 
 def modifica_immobile_pw():
       """La funzione riceve l' ID immobile da modificare e ne modifica un attibuto scelto dall'utente """
@@ -28,7 +29,6 @@ def modifica_immobile_pw():
             #controllare se immo e' una lista va iterata se oggetto no
             id_cliente = (input("Dammi il nuovo ID Cliente del Proprietario -"))
             immo.cliente_id=int(id_cliente)
-
       elif scel ==  "d":
             new_indirizzo = input("Dammi il nuovo indirizzo dell'immobile -")
             immo.indirizzo = new_indirizzo
@@ -39,6 +39,7 @@ def modifica_immobile_pw():
             new_classe = input("Dammi la nuova Classe Energetica dell'Immobile -")
             immo.classe_energ = new_classe
       immo.save()
+      return True
       
 def cancella_immobile_pw():
       """La funzione riceve ID immobile e cancella l'immobile """
@@ -49,6 +50,7 @@ def cancella_immobile_pw():
       immo = Immobile.select().where(Immobile.id == int(s)).get()
       #Ovviamente qui si dovrebbe mettere un controllo prima di cancellare!!!!
       immo.delete_instance()
+      return True
 def stampa_immobili_pw():  
       """La funzione stampa l'intero catalogo """
       query = Immobile.select()
@@ -56,6 +58,7 @@ def stampa_immobili_pw():
       for el in query:
             print(f"ID Immobile: {el.id}\nIndirizzo: {el.indirizzo}\nPrezzo: {el.prezzo}\nClasse Energetica: {el.classe_energ}\nProprietario: {el.cliente_id}\n Catalogo: {el.catalogo_id}")
             print("------------------------------------------")
+      return True
 def inserisci_cliente_pw():
       """La Funzione inserisce il nuovo Cliente con PeeWee CASO 3 esercitazione """
       nome = input("inserisci nome Cliente : ")
@@ -64,6 +67,7 @@ def inserisci_cliente_pw():
       telefono = input(" inserisci il telefono dell'Cliente : ")
       tipo = input("inserisci Tipo Cliente: p=Proprietario a=Affittuario (p/a)")
       ClienteFactory.create_cliente(nome, cognome, indirizzo, telefono, tipo)
+      return True
 def stampa_anagrafica_cliente_pw():
       """La funzione stampa l'intero DB dei CLienti della agenzia """
       query = Cliente.select()
@@ -71,6 +75,7 @@ def stampa_anagrafica_cliente_pw():
       for el in query:
             print(f"ID CLiente: {el.id}\nSig.\Sig.ra {el.nome} {el.cognome}\nIndirizzo: {el.indirizzo}\nTelefono: {el.telefono}\nTipo Cliente: {el.tipo_cliente}")
             print("------------------------------------------")
+      return True
 def cerca_immobile_pw():
       """La funzione ricerca per indirizzo nel DB l'immobile scelto dall'utente"""
       cerca = input("Quale indirizzo immobile vuoi cercare?? -")
@@ -79,6 +84,7 @@ def cerca_immobile_pw():
       for el in immo:
             print(f"ID Immobile: {el.id}\nIndirizzo: {el.indirizzo}\nPrezzo: {el.prezzo}\nClasse Energetica: {el.classe_energ}\nProprietario: {el.cliente_id}")
             print("------------------------------------------")
+      return True
 def stampa_catalogo_pw():
       """La funzione stampa a video uno dei cataloghi disponibili scelto dall'utente """
       stampa = input("Quale catalogo vuoi Stampare ? p=Prestigio v=Casa Vacanze o=Popolare (p/v/o)? ")
@@ -100,6 +106,7 @@ def stampa_catalogo_pw():
             for el in query:
                   print(f"ID Immobile: {el.id}\nIndirizzo: {el.indirizzo}\nPrezzo: {el.prezzo}\nClasse Energetica: {el.classe_energ}\nProprietario: {el.cliente_id}")
                   print("------------------------------------------")
+      return True
 
 def menu():
   """Menu grafico testuale per programma di gestione Immobili """
@@ -140,6 +147,7 @@ def menu():
       
     else:
       print(" Scelta non valida - solo numeri da 0 a 8")
+      clear_sceen()
       x = 1
   print("Hai scelto di uscire, Grazie!")
   return 0
@@ -179,7 +187,7 @@ def primi_record():
     ImmobileFactory.create_immobile(3, "via case alsole 77", 239000, "A")
 
 def main():
-    """ Funzione principale"""
+    """ Funzione principale gestisce le scelte effettuate sul menu"""
     
     #ricevo la scelta dal menu
     scelta = menu()
@@ -225,10 +233,11 @@ def main():
         pass
 
 def clear_sceen():
-    # for windows
-    if os.name == 'nt':
-        _ = os.system('cls')
-  
-    # for mac and linux(here, os.name is 'posix')
-    else:
-        _ = os.system('clear')
+      """Pulisce lo schermo"""
+      # for windows
+      if os.name == 'nt':
+            _ = os.system('cls')
+
+      # for mac and linux(here, os.name is 'posix')
+      else:
+            _ = os.system('clear')
