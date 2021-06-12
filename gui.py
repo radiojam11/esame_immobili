@@ -5,6 +5,9 @@
 import tkinter as tk
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 
+from main_peewee import *
+from classi_pw import *
+
 finestra_form_elemento = ""
 finestra_form_nome = ""
 finestra_form_cognome = ""
@@ -15,8 +18,8 @@ fin_modifica = ""
 fin_cancella = ""
 
 
-def apri():
-    """Richiama dal motore rubrica.py la funzione carica()"""
+def immobile_fn():
+    """Crea e gestisce immobile"""
     # Pulisco la finestra di testo con il comando cancella la finestra di testo
     finestra_app.delete("1.0", tk.END) 
     # Carico la Rubrica dal file
@@ -216,19 +219,24 @@ finestra_app = tk.Text(window)
 # Creo il frame dove mettero' i tasti nella finestra principale
 fr_buttons = tk.Frame(window, relief=tk.RAISED, bd=2)
 # definisco  tutti i tasti del menu principale
-btn_apri = tk.Button(fr_buttons, text="Apri", command=apri)
-btn_aggiungi = tk.Button(fr_buttons, text="Aggiungi", command=crea_form_aggiungi)
-btn_modifica = tk.Button(fr_buttons, text="Modifica", command=modifica)
-btn_cancella = tk.Button(fr_buttons, text="Cancella", command=cancella)
+btn_immobile = tk.Button(fr_buttons, text="Immobile", command=immobile_fn)
+btn_cliente = tk.Button(fr_buttons, text="Cliente", command=crea_form_aggiungi)
+btn_stampa = tk.Button(fr_buttons, text="Stampe", command=modifica)
+btn_impostaz = tk.Button(fr_buttons, text="*Impostaz", command=cancella)
+label_menu = tk.Label(fr_buttons, text="Menu'")
 
 ### costruisco i bottoni principali in un frame nella colonna 0
-btn_apri.grid(row=10, column=0, sticky="ew", padx=5, pady=5)
-btn_aggiungi.grid(row=1, column=0, sticky="ew", padx=5, pady=5 )
-btn_modifica.grid(row=2, column=0, sticky="ew", padx=5, pady=5)
-btn_cancella.grid(row=3, column=0, sticky="ew", padx=5, pady=5)
+label_menu.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
+btn_cliente.grid(row=1, column=0, sticky="ew", padx=5, pady=5 )
+btn_immobile.grid(row=2, column=0, sticky="ew", padx=5, pady=5)
+btn_stampa.grid(row=3, column=0, sticky="ew", padx=5, pady=5)
+btn_impostaz.grid(row=4, column=0, sticky="ew", padx=5, pady=5)
 fr_buttons.grid(row=0, column=0, sticky="ns")
 
 ###creo la finestra in colonna 1 con il frame testo dove ricevo la rubrica
+
+
+
 finestra_app.grid(row=0, column=1, sticky="nsew")
 
 window.mainloop()
